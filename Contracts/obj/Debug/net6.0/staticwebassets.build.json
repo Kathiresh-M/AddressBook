@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "5R0s21tsH4/w0gBkzrXj4yq8GUDp8BDRFc0WPK5fQt4=",
+  "Source": "Contracts",
+  "BasePath": "_content/Contracts",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "D:\\VSasp.netcorecode\\ProfileBookProject\\Entities\\Entities.csproj",
+      "Version": 2,
+      "Source": "Entities",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
