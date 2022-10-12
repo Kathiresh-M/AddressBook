@@ -22,6 +22,8 @@ namespace Services
         {
             var result = _mapper.Map<RefSet>(refsetdto);
             var r = _mapper.Map<RefSetDto>(result);
+            _context.RefSet.Add(result);
+            _context.SaveChanges();
             return r;
         }
 
@@ -29,6 +31,8 @@ namespace Services
         {
             var result = _mapper.Map<RefTerm>(reftermdto);
             var r = _mapper.Map<RefTermDto>(result);
+            _context.RefTerm.Add(result);
+            _context.SaveChanges();
             return r;
         }
 
@@ -36,6 +40,8 @@ namespace Services
         {
             var result = _mapper.Map<RefSetTerm>(refsettermdto);
             var r = _mapper.Map<RefSetTermDto>(result);
+            _context.RefSetTerm.Add(result);
+            _context.SaveChanges();
             return r;
         }
 

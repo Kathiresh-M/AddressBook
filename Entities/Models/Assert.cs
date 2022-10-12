@@ -7,7 +7,21 @@ namespace Entities.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public string Asserts { get; set; }
+
+        [Required]
+        public string FileName { get; set; }
+
+        [Required]
+        public string DownloadUrl { get; set; }
+
+        [Required]
+        public string FileType { get; set; }
+
+        [Required]
+        public decimal Size { get; set; }
+
+        [Required]
+        public string Content { get; set; }
 
         [ForeignKey("Profile_Id")]
         public Profiles Profile { get; set; }

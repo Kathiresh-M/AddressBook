@@ -22,11 +22,11 @@ namespace Services
         }
         public Tokens Authenticate(LoginDto logindto)
         {
-        string NamePasswordVerify = _context.Profile.Where(a => a.User_Name == logindto.UserName)
+            string NamePasswordVerify = _context.Profile.Where(a => a.User_Name == logindto.UserName)
                 .Select(a => a.Password).SingleOrDefault();
-            string FristName = _context.Profile.Where(a => a.First_Name == logindto.UserName)
+            string FristName = _context.Profile.Where(a => a.User_Name == logindto.UserName)
                     .Select(a => a.First_Name).SingleOrDefault();
-            string LastName = _context.Profile.Where(a => a.Last_Name == logindto.UserName)
+            string LastName = _context.Profile.Where(a => a.User_Name == logindto.UserName)
                     .Select(a => a.Last_Name).SingleOrDefault();
             if (NamePasswordVerify == null)
                 return null;

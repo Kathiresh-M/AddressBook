@@ -6,4 +6,9 @@ namespace Entities.Dto
     {
 
     }
+
+    public class PhoneUpdationDTO : PhoneDto
+    {
+        public Guid Id { get; set; }
+    }
 }

@@ -81,3 +81,10 @@ D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Cont
 D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Services.dll
 D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Contracts.pdb
 D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Services.pdb
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\log4net.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\VSasp.netcorecode\ProfileBookProject\ProfileBookProject\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

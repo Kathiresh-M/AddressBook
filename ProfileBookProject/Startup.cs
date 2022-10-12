@@ -43,16 +43,17 @@ namespace ProfileBookProject
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });
-            services.AddSingleton<IJWTManagerServices, JWTManagerServices>();
+            services.AddTransient<IJWTManagerServices, JWTManagerServices>();
 
 
 
             services.AddDbContext<BookRepository>(
                options => options.UseSqlServer(Configuration.GetConnectionString("AddressBookDatabase")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen();
             services.AddScoped<IAddressBookServices, AddressBookServices>();
             services.AddScoped<IAuthenticateBookServices, AuthenticateBookServices>();
+
             services.AddAutoMapper(typeof(Startup));
             var mappingConfig = new MapperConfiguration(mc => {
                 mc.AddProfile(new AddressBookProfile());
