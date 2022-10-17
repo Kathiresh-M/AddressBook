@@ -6,17 +6,17 @@ namespace Contracts
 {
     public interface IAddressBookServices
     {
-        ActionResult<RefSetDto> Add(RefSetDto refsetdto);
-        ActionResult<RefTermDto> AddRefTerm(RefTermDto reftermdto);
-        ActionResult<RefSetTermDto> AddRefSetTerm(RefSetTermDto refsettermdto);
-        int CountRecord();
+        RefSetDto Add(RefSetDto refsetdto);
+        RefTermDto AddRefTerm(RefTermDto reftermdto);
+        RefSetTermDto AddRefSetTerm(RefSetTermDto refsettermdto);
+        int CountAddressBook();
         bool Save();
         Task File(ICollection<IFormFile> files);
         void DeleteAddress(Profiles profile);
         Profiles GetAddress(Guid Id);
-        ActionResult<ProfileforCreatingDto> GetById(Guid Id);
-        ActionResult<List<ProfileforCreatingDto>> GetAddressBook();
-
+        ProfileforCreatingDto GetAddressBookById(Guid Id);
+        ActionResult<List<ProfileforCreatingDto>> GetAddressBooks();
+        AddressBookResponsetoUser UpdateAddressBook(ProfileforCreatingDto addressBookData, Guid addressBookId, Guid userId);
     }
 }
 

@@ -5,6 +5,8 @@ namespace Contracts
 {
     public interface IJWTManagerServices
     {
-        Tokens Authenticate(LoginDto logindto);
+        string GenerateSecurityToken(LoginDto login);
+        int? ValidateJwtToken(string token);
+        //Tokens Authenticate(LoginDto logindto);
     }
 }

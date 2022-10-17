@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Dto;
 using Entities.Models;
 using Repository;
+using Services.Response;
 
 namespace Services
 {
@@ -26,6 +28,17 @@ namespace Services
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
+        }
+        public TokenResponse AuthUser(LoginDto userData)
+        {
+
+            if (userData == null)
+                return new TokenResponse(false, "User not authenticated", null, null);
+
+            if (_passwordHasher.PasswordMatches(userData.Password, userData.Hash))
+                return new TokenResponse(true, "", IJWTManagerServices.GenerateSecurityToken(user), "bearer");
+
+            return new TokenResponse(false, "User not authenticated", null, null);
         }
     }
 }
