@@ -11,4 +11,6 @@ namespace Entities.Dto
     {
         public Guid Id { get; set; }
     }
+
+    public class PhoneToReturnDTO : PhoneUpdationDTO { }
 }

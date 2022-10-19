@@ -2,9 +2,11 @@
 using Contracts;
 using Entities.Dto;
 using Entities.Models;
+using log4net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Services.Helper;
 
 namespace AddressProfileBookProject.Controller
 {
@@ -14,46 +16,40 @@ namespace AddressProfileBookProject.Controller
     {
         private readonly IAuthenticateBookServices _authenticateBookServices;
         private readonly IMapper _mapper;
-        private readonly IJWTManagerServices _jWTManagerServices;
+        private readonly ILog _log;
 
-        public authController(IAuthenticateBookServices authenticateBookServices, IMapper mapper
-            , IJWTManagerServices jWTManagerServices)
+        public authController(IAuthenticateBookServices authenticateBookServices, 
+            IMapper mapper, ILog log)
         {
             _authenticateBookServices = authenticateBookServices;
             _mapper = mapper;
-            _jWTManagerServices = jWTManagerServices;
+            _log = LogManager.GetLogger(typeof(accountController));
         }
 
-        //[AllowAnonymous]
-        /*[HttpPost("signin")]
-        public IActionResult Authenticate(LoginDto login)
-        {
-            var token = _jWTManagerServices.Authenticate(login);
-
-            if (token == null)
-                return Unauthorized();
-
-            return Ok(token);
-        }*/
         [HttpPost("signin")]
         public IActionResult AuthUser([FromBody] LoginDto user)
         {
-            
-            var response = _jWTManagerServices.AuthUser(user);
+            if (!ModelState.IsValid)
+            {
+                _log.Error("Invalid login details used.");
+                return BadRequest("Enter valid user data");
+            }
+
+            var response = _authenticateBookServices.AuthUser(user);
             var token = new Token(response.AccessToken, response.TokenType);
             return Ok(token);
         }
 
-        [HttpPost("CreateAddress")]
+        /*[HttpPost("CreateAddress")]
         public ActionResult<ProfilesDto> CreateBand([FromBody] ProfileforCreatingDto profileforcreatingdto)
         {
-            var bandEntity = _mapper.Map<Profiles>(profileforcreatingdto);
-            _authenticateBookServices.AddBand(bandEntity);
+            var result = _mapper.Map<Profiles>(profileforcreatingdto);
+            _authenticateBookServices.AddAddressBook(result);
             _authenticateBookServices.Save();
 
-            var bandToReturn = _mapper.Map<ProfilesDto>(bandEntity);
+            var AddressToReturn = _mapper.Map<ProfilesDto>(result);
 
-            return CreatedAtRoute("GetBand", new { bandId = bandToReturn.Id }, bandToReturn);
-        }
+            return CreatedAtRoute("GetBand", new { bandId = AddressToReturn.Id }, AddressToReturn);
+        }*/
     }
 }

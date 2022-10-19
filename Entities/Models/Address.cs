@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get data from user and map to Profile.
+    /// </summary>
     public class Address
     {
         [Key]
@@ -11,7 +14,12 @@ namespace Entities.Models
         public string Line2 { get; set; }
         public string City { get; set; }
         public string State_Name { get; set; }
-        public string Country { get; set; }
+
+        [ForeignKey("RefSetMappingId")]
+        public Guid AddressTypeId { get; set; }
+
+        [ForeignKey("RefSetMappingId")]
+        public Guid CountryTypeId { get; set; }
 
         public string ZipCode { get; set; }
 

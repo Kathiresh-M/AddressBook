@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get File Details from user and map to Profile.
+    /// </summary>
     public class Assert
     {
         [Key]

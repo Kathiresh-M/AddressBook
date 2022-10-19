@@ -1,20 +1,21 @@
 ﻿using Contracts;
 using Entities.Models;
+using Repository;
 
 namespace Services.Helper
 {
     public class EmailRepository : IEmailRepository
     {
-        private readonly BookRepostiry _context;
+        private readonly BookRepository _context;
 
-        public EmailRepository(BookRepostiry context)
+        public EmailRepository(BookRepository context)
         {
             _context = context;
         }
-        public IEnumerable<Email> GetEmailsByAddressBookId(Guid addressBookId)
+        public ICollection<Email> GetEmailsByAddressBookId(Guid addressBookId)
         {
             var Emails = _context.Email.ToList();
-            return Emails.FindAll(Email => Email.AddressBookId == addressBookId);
+            return Emails.FindAll(Email => Email.Id == addressBookId);
         }
     }
 }

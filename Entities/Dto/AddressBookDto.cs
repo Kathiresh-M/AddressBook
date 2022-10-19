@@ -8,8 +8,8 @@ namespace Entities.Dto
         public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public IEnumerable<Email> Emails { get; set; }
-        public IEnumerable<Address> Addresses { get; set; }
-        public IEnumerable<Phone> Phones { get; set; }
+        public ICollection<Email> Emails { get; set; }
+        public ICollection<Address> Addresses { get; set; }
+        public ICollection<Phone> Phones { get; set; }
     }
 }

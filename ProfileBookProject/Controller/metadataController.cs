@@ -8,15 +8,15 @@ using System.Security.Claims;
 
 namespace AddressProfileBookProject.Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/metadata")]
     [ApiController]
-    public class metadataController : ControllerBase
+    public class MetaDataController : ControllerBase
     {
         private readonly ILogger<accountController> _logger;
         private readonly IMetadataServices _metadataServices;
         private readonly IMapper _mapper;
         private readonly ILog _log;
-        public metadataController(IAddressBookServices addressBookServices, IMapper mapper,
+        public MetaDataController(IAddressBookServices addressBookServices, IMapper mapper,
             ILogger<accountController> logger, ILog log, IMetadataServices metadataServices)
         {
             _mapper = mapper ??
@@ -28,14 +28,19 @@ namespace AddressProfileBookProject.Controller
             _log = LogManager.GetLogger(typeof(accountController));
         }
 
+        /// <summary>
+        /// Method to get list of reference term under a refernce set
+        /// </summary>
+        /// <param name="Id">reference set Id</param>
+        /// <returns>list of reference terms</returns>
         [HttpGet("refset/{refSetId}")]
         public IActionResult GetAllRefTerm(Guid Id)
         {
 
             Guid tokenUserId;
-            Guid.TryParse(Profile.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+            Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
 
-            if (refSetId == null || refSetId == Guid.Empty)
+            if (Id == null || Id == Guid.Empty)
             {
                 _log.Info("Invalid ref set id " + tokenUserId);
                 return BadRequest("Invalid ref set id");
@@ -43,7 +48,7 @@ namespace AddressProfileBookProject.Controller
 
             var response = _metadataServices.GetRefTermsByRefSetId(Id);
 
-            var refSetToReturn = _mapper.Map<IEnumerable<RefTermToReturnDTO>>(response.RefTerms);
+            var refSetToReturn = _mapper.Map<ICollection<RefTermToReturnDTO>>(response.RefTerms);
 
             return Ok(refSetToReturn);
         }

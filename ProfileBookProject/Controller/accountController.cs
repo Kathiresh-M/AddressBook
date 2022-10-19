@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Services.Helper;
 using System.Security.Claims;
 
 namespace AddressProfileBookProject.Controller
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/account")]
     [ApiController]
     public class accountController : ControllerBase
     {
@@ -32,6 +33,11 @@ namespace AddressProfileBookProject.Controller
             _log = LogManager.GetLogger(typeof(accountController));
         }
 
+        /// <summary>
+        /// Method to Create a RefSet 
+        /// </summary>
+        /// <param name="refsetdto">RefSet Data to be created</param>
+        /// <returns></returns>
         [HttpPost("refset")]
         public IActionResult AddRefSet([FromBody] RefSetDto refsetdto)
         {
@@ -39,29 +45,82 @@ namespace AddressProfileBookProject.Controller
             return Ok();
         }
 
+        /// <summary>
+        /// Method to Create a RefTerm 
+        /// </summary>
+        /// <param name="reftermdto">RefTerm Data to be created</param>
+        /// <returns></returns>
         [HttpPost("refterm")]
-        public ActionResult AddRefTerm([FromBody] RefTermDto reftermdto)
+        public IActionResult AddRefTerm([FromBody] RefTermDto reftermdto)
         {
-                    var result = _addressBookServices.AddRefTerm(reftermdto);
-                    return Ok();    
+            var result = _addressBookServices.AddRefTerm(reftermdto);
+            return Ok();    
         }
 
+        /// <summary>
+        /// Method to Create a RefSetTerm
+        /// </summary>
+        /// <param name="refsettermdto">RefSetTerm Data to be created</param>
+        /// <returns></returns>
         [HttpPost("refsetterm")]
-        public ActionResult AddRefSetTerm([FromBody] RefSetTermDto refsettermdto)
+        public IActionResult AddRefSetTerm([FromBody] RefSetTermDto refsettermdto)
         {
-                    var result = _addressBookServices.AddRefSetTerm(refsettermdto);
-                    return Ok();
+            var result = _addressBookServices.AddRefSetTerm(refsettermdto);
+            return Ok();
         }
 
+        /// <summary>
+        /// Method to create an address book
+        /// </summary>
+        /// <param name="addressBookData">address book data to be created</param>
+        /// <returns>Id of the address book created</returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult CreateAddressBook([FromBody]
+        ProfileforCreatingDto addressBookData)
+        {
+            if (!ModelState.IsValid)
+            {
+                _log.Error("Invalid addressbook details used.");
+                return BadRequest("Enter valid addressbook data");
+            }
+
+            Guid tokenUserId;
+            var isValidToken = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+
+            if (!isValidToken)
+            {
+                _log.Warn($"User with invalid token, trying to access address book data");
+                return Unauthorized();
+            }
+
+            if (tokenUserId == null || tokenUserId == Guid.Empty)
+            {
+                _log.Error("Trying to access address book count with not a valid user id by user: " + tokenUserId);
+                return BadRequest("Not a valid user ID.");
+            }
+
+            var response = _addressBookServices.CreateAddressBook(addressBookData, tokenUserId);
+            return Ok($"Address book created with ID: {response.addressBook.Id}");
+        }
+
+        /// <summary>
+        /// Method to get a count of address book
+        /// </summary>
+        /// <returns>Count of Address Book</returns>
         [HttpGet("count")]
         public IActionResult GetAddressBookCount()
         {
             var result = _addressBookServices.CountAddressBook();
-                return Ok(result);
+            return Ok(result);
         }
 
-        [HttpGet("")]
-        public ActionResult GetAddressBooks()
+        /// <summary>
+        /// Method to get a all address book
+        /// </summary>
+        /// <returns>an address book</returns>
+        [HttpGet]
+        public IActionResult GetAddressBooks()
         {
             if (!ModelState.IsValid)
             {
@@ -71,35 +130,43 @@ namespace AddressProfileBookProject.Controller
             return Ok(result);
         }
 
+        /// <summary>
+        /// Method to delete an address book
+        /// </summary>
+        /// <param name="addressBookId">Id of the address book</param>
+        /// <returns></returns>
         [HttpDelete("{Id}")]
-        public ActionResult DeleteAddressBook(Guid Id)
+        public IActionResult DeleteAddressBook(Guid addressBookId)
         {
             Guid tokenUserId;
-            var isValidToken = Guid.TryParse(Profile.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+            var isValidToken = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
 
             if (!isValidToken)
             {
-                _log.Warn($"User with invalid token, trying to access user data");
+                _log.Warn($"User with invalid token, trying to access address book data");
                 return Unauthorized();
             }
 
-            var addressfromrepo = _addressBookServices.GetAddress(Id);
+            var addressBookResponseData = _addressBookServices.GetAddressBook(addressBookId, tokenUserId);
 
-            if (addressfromrepo == null)
-                return NotFound();
+            var deleteResponse = _addressBookServices.DeleteAddressBook(addressBookId, tokenUserId);
 
-            _addressBookServices.DeleteAddress(addressfromrepo);
-            _addressBookServices.Save();
 
-            return Ok();
+            return Ok(addressBookResponseData.addressBook);
+
         }
 
-        [HttpGet("Id")]
-        public ActionResult GetAnAddressBookId([FromRoute] Guid Id)
+        /// <summary>
+        /// Method to get a particular address book
+        /// </summary>
+        /// <param name="Id">Address Book Id</param>
+        /// <returns>an address book</returns>
+        [HttpGet("{Id}")]
+        public IActionResult GetAnAddressBook([FromRoute] Guid Id)
         {
 
 	        Guid tokenUserId;
-            var isValidToken = Guid.TryParse(Profile.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+            var isValidToken = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
 
             if (!isValidToken)
             {
@@ -113,7 +180,7 @@ namespace AddressProfileBookProject.Controller
                 return BadRequest("Not a valid address book ID.");
             }
 
-            var result = _addressBookServices.GetById(Id);
+            var result = _addressBookServices.GetAddressBookById(Id);
 
             if (result == null)
                 return NotFound();
@@ -121,8 +188,15 @@ namespace AddressProfileBookProject.Controller
             return Ok(result);
         }
 
-        [HttpPut("{userId}")]
-        public IActionResult UpdateAddressBook(Guid addressBookId, [FromBody] ProfileforCreatingDto addressBookData)
+        /// <summary>
+        /// Method to update an address book
+        /// </summary>
+        /// <param name="addressBookId">Id of the address book in Database</param>
+        /// <param name="addressBookData">address book data to be updated</param>
+        /// <returns>Id of the address book created</returns>
+        [HttpPut("{id}")]
+        public IActionResult UpdateAddressBook(Guid addressBookId, 
+            [FromBody] AddressBookUpdate addressBookData)
         {
             if (!ModelState.IsValid)
             {
@@ -145,7 +219,8 @@ namespace AddressProfileBookProject.Controller
                 return BadRequest("Not a valid user ID.");
             }
 
-            var response = _addressBookService.UpdateAddressBook(addressBookData, addressBookId);
+            var response = _addressBookServices.UpdateAddressBook(addressBookData, 
+                addressBookId, tokenUserId);
 
             if (!response.IsSuccess && response.Message.Contains("Additional") || response.Message.Contains("duplication") || response.Message.Contains("not valid"))
             {

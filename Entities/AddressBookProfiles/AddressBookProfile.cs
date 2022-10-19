@@ -18,6 +18,14 @@ namespace Entities.AddressBookProfiles
             CreateMap<Profiles, ProfilesDto>().ReverseMap();
 
             CreateMap<ProfileforCreatingDto, Profiles>().ReverseMap();
+
+            CreateMap<EmailDto, Email>();
+
+            CreateMap<PhoneDto, Phone>();
+
+            CreateMap<AddressDto, Address>();
+
+            CreateMap<Assert, AssertDto>();
         }
     }
 }

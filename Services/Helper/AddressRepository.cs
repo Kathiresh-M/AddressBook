@@ -15,7 +15,7 @@ namespace Services.Helper
         public ICollection<Address> GetAddresssByAddressBookId(Guid addressBookId)
         {
             var Addresss = _context.Address.ToList();
-            return Addresss.FindAll(Address => Address.AddressBookId == addressBookId);
+            return Addresss.FindAll(Address => Address.Id == addressBookId);
         }
     }
 }

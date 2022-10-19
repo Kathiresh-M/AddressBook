@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Contracts;
+using Entities.Models;
 using Repository;
 
 namespace Services.Helper
@@ -26,13 +27,13 @@ namespace Services.Helper
 
             var refTerms = from refSet in _context.RefSet
                            join refSetterm in _context.RefSetTerm
-                           on refSet.Id equals refSetterm.RefSetId
+                           on refSet.Id equals refSetterm.RefSet_Id
                            join refTerm in _context.RefTerm
-                           on refSetterm.RefTermId equals refTerm.Id
+                           on refSetterm.RefTerm_Id equals refTerm.Id
                            select new
                            {
                                Id = refTerm.Id,
-                               Key = refTerm.Key,
+                               Key = refTerm.RefTerm_Key,
                                Description = refTerm.Description,
                                RefSetId = refSet.Id,
                            };
@@ -42,7 +43,7 @@ namespace Services.Helper
             foreach (var refTerm in refTerms)
             {
                 if (refSetId == refTerm.RefSetId)
-                    terms.Add(new RefTerm { Id = refTerm.Id, RefTerm_Key = refTerm.RefTerm_Key, Description = refTerm.Description });
+                    terms.Add(new RefTerm { Id = refTerm.Id, RefTerm_Key = refTerm.Key, Description = refTerm.Description });
             }
 
             return terms;
@@ -61,15 +62,15 @@ namespace Services.Helper
                                  select new RefSetTerm
                                  {
                                      Id = refSetTerm.Id,
-                                     Id = refSetTerm.Id,
-                                     Id = refSetTerm.Id
+                                     RefSet_Id = refSetTerm.RefSet_Id,
+                                     RefTerm_Id = refSetTerm.RefTerm_Id
                                  };
 
             var mappings = new List<RefSetTerm>();
 
             foreach (var refSetMapping in refSetmappings)
             {
-                if (refSetId == refSetMapping.RefSetId)
+                if (refSetId == refSetMapping.RefSet_Id)
                     mappings.Add(refSetMapping);
             }
 

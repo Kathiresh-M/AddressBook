@@ -7,8 +7,9 @@ namespace Entities.Dto
 
     }
 
-     public class EmailUpdationDTO : EmailDto
+     public class EmailUpdationDto : EmailDto
     {
         public Guid Id { get; set; }
     }
+    public class EmailToReturnDto : EmailUpdationDto { }
 }

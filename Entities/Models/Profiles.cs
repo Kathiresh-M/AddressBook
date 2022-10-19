@@ -2,6 +2,9 @@
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get Address Book details from user and stored in database.
+    /// </summary>
     public class Profiles
     {
         [Key]

@@ -2,6 +2,9 @@
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get RefSet key .
+    /// </summary>
     public class RefSet
     {
         [Key]

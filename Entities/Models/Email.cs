@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get Email details from user and map to Profile.
+    /// </summary>
     public class Email
     {
         [Key]
@@ -10,6 +13,9 @@ namespace Entities.Models
 
         [EmailAddress]
         public string User_Email { get; set; }
+
+        [ForeignKey("RefSetMappingId")]
+        public Guid EmailTypeId { get; set; }
 
         [ForeignKey("Profile_Id")]
         public Profiles Profile { get; set; }

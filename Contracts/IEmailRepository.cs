@@ -4,6 +4,6 @@ namespace Contracts
 {
     public interface IEmailRepository
     {
-        IEnumerable<Email> GetEmailsByAddressBookId(Guid addressBookId);
+        ICollection<Email> GetEmailsByAddressBookId(Guid addressBookId);
     }
 }

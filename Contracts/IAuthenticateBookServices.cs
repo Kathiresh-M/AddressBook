@@ -1,12 +1,12 @@
 ﻿using Entities.Dto;
 using Entities.Models;
+using Services.Response;
 
 namespace Contracts
 {
     public interface IAuthenticateBookServices
     {
         TokenResponse AuthUser(LoginDto userData);
-        void AddBand(Profiles profile);
         bool Save();
     }
 }

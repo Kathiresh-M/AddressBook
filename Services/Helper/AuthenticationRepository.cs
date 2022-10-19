@@ -1,47 +1,34 @@
-﻿namespace Services.Helper
-{
-    public class AuthenticationRepository
-    {
-        public void CreateUser(Profile user)
-        {
-            if (user == null)
-                throw new ArgumentNullException("User data was null in CreateUser from repository");
+﻿using Contracts;
+using Entities.Models;
+using Repository;
 
-            _context.Users.Add(user);
+namespace Services.Helper
+{
+    public class AuthenticationRepository : IAuthRepository
+    {
+        private readonly BookRepository _context;
+
+        public AuthenticationRepository(BookRepository context)
+        {
+            _context = context;
         }
 
         //Get user by username
-        public User GetUser(string userName)
+        public Profiles GetUser(string userName)
         {
             if (string.IsNullOrEmpty(userName))
-                throw new ArgumentNullException(nameof(userName) + " was null in GetUser from repository");
+                throw new ArgumentNullException(nameof(userName) + " was null in GetUser");
 
-            return _context.Users.SingleOrDefault(user => user.UserName == userName);
+            return _context.Profile.SingleOrDefault(user => user.User_Name == userName);
         }
 
         //Get user by user id
-        public User GetUser(Guid userId)
+        public Profiles GetUser(Guid userId)
         {
             if (userId == null || userId == Guid.Empty)
-                throw new ArgumentNullException(nameof(userId) + " was null in GetUser from repository");
+                throw new ArgumentNullException(nameof(userId) + " was null in GetUser");
 
-            return _context.Users.SingleOrDefault(user => user.Id == userId);
-        }
-
-        public void UpdateUser(User user)
-        {
-            if (user == null)
-                throw new ArgumentNullException("User data was null in Deleteuser from repository");
-
-            _context.Users.Update(user);
-        }
-
-        public void DeleteUser(User user)
-        {
-            if (user == null)
-                throw new ArgumentNullException("User data was null in Deleteuser from repository");
-
-            _context.Users.Remove(user);
+            return _context.Profile.SingleOrDefault(user => user.Id == userId);
         }
     }
 }

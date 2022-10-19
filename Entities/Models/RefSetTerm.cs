@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get RefSet and RefTerm Id and mapped in RefSetTerm.
+    /// </summary>
     public class RefSetTerm
     {
         [Key]

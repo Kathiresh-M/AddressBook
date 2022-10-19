@@ -28,24 +28,45 @@ namespace AddressProfileBookProject.Controller
                 throw new ArgumentNullException(nameof(logger));
             _log = LogManager.GetLogger(typeof(accountController));
         }
-        [HttpPost("{addressBookId}")]
-        public IActionResult UploadAsset(Guid addressBookId, [FromForm] IFormFile file)
+
+        //// <summary>
+        /// Method to upload an Asset
+        /// </summary>
+        /// <param name="Id">Address Book Id</param>
+        /// <param name="file">asset file</param>
+        /// <returns>asset meta data</returns>
+        [HttpPost("{Id}")]
+        public IActionResult UploadAsset(Guid Id, [FromForm] IFormFile file)
         {
+            Guid tokenUserId;
+            var isValidToken = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+
+            if (!isValidToken)
+            {
+                _log.Warn("User with invalid token, trying to upload user data");
+                return Unauthorized();
+            }
+
             var asset = new Assert();
             asset.Id = Guid.NewGuid();
             asset.DownloadUrl = GenerateDownloadUrl(asset.Id);
-            var response = _assetServices.AddAsset(addressBookId, asset, file);
+            var response = _assetServices.AddAsset(Id, tokenUserId, asset, file);
 
             
             var assetToReturn = _mapper.Map<AssertDto>(response.Asset);
             return Ok(assetToReturn);
         }
 
-        [HttpGet("{Id}", Name = "DownloadImage")]
+        /// <summary>
+        /// Method to Download an asset
+        /// </summary>
+        /// <param name="Id">Id of the Asset</param>
+        /// <returns>asset file</returns>
+        [HttpGet("{Id}")]
         public IActionResult DownloadAsset(Guid Id)
         {
             Guid tokenUserId;
-            var isValidToken = Guid.TryParse(Profiles.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
+            var isValidToken = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out tokenUserId);
 
             if (!isValidToken)
             {

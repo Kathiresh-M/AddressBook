@@ -19,5 +19,13 @@ namespace Services.Helper
 
             return _context.RefSet.SingleOrDefault(refSet => refSet.Id == refSetId);
         }
+
+        public RefSet GetRefSet(string set)
+        {
+            if (string.IsNullOrEmpty(set))
+                throw new ArgumentNullException(nameof(set) + " was null in GetRefSet from RefSetRepository.");
+
+            return _context.RefSet.SingleOrDefault(refSet => refSet.RefSet_Key.ToLower() == set.ToLower());
+        }
     }
 }

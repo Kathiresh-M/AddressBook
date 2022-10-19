@@ -3,14 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
+    /// <summary>
+    /// Used to get Phone details from user and map to Profile.
+    /// </summary>
     public class Phone
     {
         [Key]
         public Guid Id { get; set; }
 
         [Phone]
-        public int Phone_Number { get; set; }
-        public string Phone_type { get; set; }
+        public string Phone_Number { get; set; }
+        //public string Phone_type { get; set; }
+
+        [ForeignKey("RefSetMappingId")]
+        public Guid PhoneTypeId { get; set; }
 
         [ForeignKey("Profile_Id")]
         public Profiles Profile { get; set; }

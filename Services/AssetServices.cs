@@ -15,10 +15,25 @@ namespace Services
             _addressBookRepository = addressBookRepository;
         }
 
-        public AssetResponsetoUser AddAsset(Guid Id, Assert assetData, IFormFile file)
+        /// <summary>
+        /// Method to Create asset
+        /// </summary>
+        /// <param name="Id">Address Book Id</param>
+        /// <param name="tokenUserId">Token Id</param>
+        /// <param name="assetData">Asset data for create</param>
+        /// <param name="file">Asset file data</param>
+        public AssetResponsetoUser AddAsset(Guid Id, Guid tokenUserId, 
+            Assert assetData, IFormFile file)
         {
             var addressBook = _addressBookRepository.GetAddressBookById(Id);
             var assetExists = _assetRepository.GetAssetByAddressBookId(Id);
+
+            if (assetExists != null && assetExists.Id.Equals(tokenUserId))
+                return new AssetResponsetoUser(false, "Asset already exists", null);
+
+            if (assetExists != null && !assetExists.Id.Equals(tokenUserId))
+                return new AssetResponsetoUser(false, "AddressBook not found", null);
+
             assetData.Id = Id;
             assetData.FileName = file.FileName;
             assetData.Size = file.Length;
@@ -35,9 +50,22 @@ namespace Services
 
             return new AssetResponsetoUser(true, null, assetData);
         }
-        public AssetResponsetoUser GetAsset(Guid assetId)
+
+        /// <summary>
+        /// Method to Get Asset
+        /// </summary>
+        /// <param name="assetId">Id of asset</param>
+        /// <param name="tokenUserId">Token Id</param>
+        public AssetResponsetoUser GetAsset(Guid assetId, Guid tokenUserId)
         {
             var asset = _assetRepository.GetAssetByAssetId(assetId);
+
+            if (asset == null)
+                return new AssetResponsetoUser(false, "Asset not found", null);
+
+            if (!asset.Id.Equals(tokenUserId))
+                return new AssetResponsetoUser(false, "Asset not found", null);
+
             return new AssetResponsetoUser(true, null, asset);
         }
     }

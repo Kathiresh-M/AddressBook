@@ -1,17 +1,14 @@
-﻿namespace Entities.Dto
+﻿using System;
+
+namespace Entities.Dto
 {
-        public class RefTermDTO
-        {
-            public string RefTerm_Key { get; set; }
-            public string Description { get; set; }
-        }
-
-        public class RefTermCreationDTO : RefTermDTO { }
-
-        public class RefTermUpdationDTO : RefTermDTO { }
-
-        public class RefTermToReturnDTO : RefTermDTO
-        {
-            public Guid Id { get; set; }
-        }
+    public class RefTermDto
+    {
+        public string RefTerm_Key { get; set; }
+        public string Description { get; set; }
+    }
+    public class RefTermToReturnDTO : RefTermDto
+    {
+        public Guid Id { get; set; }
+    }
 }
